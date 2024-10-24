@@ -64,3 +64,10 @@
   .device-details-form button:hover {
     background-color: #2a2a4e;
   }
+
+  .warning-text {
+    color: red;
+    font-size: 14px;
+    margin-top: 5px;
+  }
+  
