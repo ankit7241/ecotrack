@@ -3,8 +3,6 @@ import axios from "axios"; // Make sure to install axios: npm install axios
 import "./ApplianceScanner.css";
 
 function ApplianceScanner() {
-	//Change it
-	const usageLimit = 10;
 	const [image, setImage] = useState(null);
 	const [deviceDetails, setDeviceDetails] = useState({
 		name: "",
@@ -12,7 +10,6 @@ function ApplianceScanner() {
 		type: "",
 		wattage: 0,
 	});
-	const [isUsageOverLimit, setIsUsageOverLimit] = useState(false); // State to track if usage exceeds the limit
 
 	const handleImageUpload = async (event) => {
 		const file = event.target.files[0];
@@ -52,27 +49,10 @@ function ApplianceScanner() {
 					}));
 				} catch (error) {
 					console.error("Error:", error);
-					alert("Failed to process the image. Please try again.");
 				}
 			};
 			reader.readAsDataURL(file);
 		}
-	};
-
-	const handleInputChange = (event) => {
-		const { name, value } = event.target;
-		const intValue = parseInt(value, 10);
-
-		if (name === "usage" && intValue > usageLimit) {
-			setIsUsageOverLimit(true);
-		} else {
-			setIsUsageOverLimit(false);
-		}
-
-		setDeviceDetails((prevDetails) => ({
-			...prevDetails,
-			[name]: name === "usage" ? (value === "" ? "" : intValue) : value,
-		}));
 	};
 
 	const handleSubmit = (event) => {
@@ -125,7 +105,6 @@ function ApplianceScanner() {
 						type="text"
 						name="name"
 						value={deviceDetails.name}
-						onChange={handleInputChange}
 						placeholder="Device Name"
 						required
 					/>
@@ -133,17 +112,11 @@ function ApplianceScanner() {
 						type="number"
 						name="usage"
 						value={deviceDetails.usage}
-						onChange={handleInputChange}
-						placeholder={`Usage (hours per day, max ${usageLimit})`}
+						placeholder={`Usage (hours per day)`}
 						min="0"
 						max="24"
 						required
 					/>
-					{isUsageOverLimit && (
-						<p className="warning-text">
-							Usage exceeds the limit of {usageLimit} hours per day!
-						</p>
-					)}
 					{deviceDetails.type && (
 						<p>Detected Device Type: {deviceDetails.type}</p>
 					)}
